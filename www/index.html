@@ -1,72 +1,108 @@
 <!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>منبه الدراسة</title>
+<meta name="theme-color" content="#0e1b1a"><title>منبه الدراسة</title>
 <style>
-:root{--bg:#0e1b1a;--card:#162826;--ink:#f3efe4;--mut:#9fb3ae;--acc:#f2b84b;--ok:#6fd3a0;--bad:#ef6f5e}
+:root{--bg:#0e1b1a;--card:#162826;--ink:#f3efe4;--mut:#9fb3ae;--acc:#f2b84b;--ok:#6fd3a0}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif;padding:env(safe-area-inset-top) 16px 90px}
-h1{font-size:15px;color:var(--mut);font-weight:500;margin:18px 0 0}
-.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 4px;text-align:center}
-.cd b{display:block;font-size:44px;line-height:1.1;color:var(--acc);font-variant-numeric:tabular-nums}.cd span{font-size:13px;color:var(--mut)}
-.q{background:var(--card);border-radius:14px;padding:16px;margin:14px 0;font-size:18px}
+h1{font-size:14px;color:var(--mut);font-weight:500;margin:16px 0 0}h3{margin:18px 0 6px;font-size:16px}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0;text-align:center}
+.cd b{display:block;font-size:42px;line-height:1.1;color:var(--acc);font-variant-numeric:tabular-nums}.cd span{font-size:13px;color:var(--mut)}
+.card{background:var(--card);border-radius:14px;padding:14px;margin:12px 0}.q{font-size:18px}
 .sec{display:none}.sec.on{display:block}
-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0a1413;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
-nav button{flex:1;background:none;border:0;color:var(--mut);font:inherit;padding:10px}nav button.on{color:var(--acc);font-weight:700}
-button.p{background:var(--acc);color:#1b1500;border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:700}
-input,textarea{width:100%;background:var(--card);color:var(--ink);border:1px solid #2b4440;border-radius:10px;padding:10px;font:inherit}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0a1413;padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+nav button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:13px;padding:8px 2px}nav button.on{color:var(--acc);font-weight:700}
+button.p{background:var(--acc);color:#1b1500;border:0;border-radius:12px;padding:11px 16px;font:inherit;font-weight:700}
+button.g{background:#244039;color:var(--ink);border:0;border-radius:10px;padding:8px 12px;font:inherit}
+input{width:100%;background:var(--card);color:var(--ink);border:1px solid #2b4440;border-radius:10px;padding:10px;font:inherit}
 label{display:block;margin:14px 0 4px;color:var(--mut);font-size:14px}
-#chat{height:48vh;overflow:auto;background:var(--card);border-radius:14px;padding:12px}
+#chat{height:44vh;overflow:auto;background:var(--card);border-radius:14px;padding:12px}
 .m{margin:8px 0;padding:8px 12px;border-radius:12px;max-width:88%}.u{background:#244039;margin-right:auto}.a{background:#2c3a2a;margin-left:auto}
-.row{display:flex;gap:8px;margin-top:10px}
+.row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.row>input{flex:1;min-width:0}
+.stats{display:flex;gap:10px;text-align:center}.stats>div{flex:1}.stats b{display:block;font-size:26px;color:var(--ok)}.stats span{font-size:12px;color:var(--mut)}
+.bars{display:flex;align-items:flex-end;gap:6px;height:70px;margin-top:10px}.bars i{flex:1;background:var(--acc);border-radius:4px 4px 0 0;min-height:3px}
+.tk{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #223a36}.tk span{flex:1}.tk.d span{text-decoration:line-through;color:var(--mut)}
+#fclock{font-size:64px;text-align:center;font-variant-numeric:tabular-nums;color:var(--acc)}
 #ring{display:none;position:fixed;inset:0;background:#7a1f14;z-index:9;padding:30px 20px;text-align:center}
-#ring h2{font-size:34px;margin:30px 0 8px}#ring.on{display:block}#msg{min-height:26px;margin-top:14px}
+#ring h2{font-size:34px;margin:30px 0 8px}#ring.on{display:block}
 </style></head><body>
-<h1>المتبقي على 1 فبراير 2027</h1>
+<h1 id="ttl"></h1>
 <div class="cd"><div><b id="d">0</b><span>يوم</span></div><div><b id="h">0</b><span>ساعة</span></div><div><b id="mi">0</b><span>دقيقة</span></div><div><b id="s">0</b><span>ثانية</span></div></div>
 
-<div class="sec on" id="t-home"><div class="q" id="quote"></div>
-<button class="p" onclick="newQuote(true)">تحفيز جديد</button>
+<div class="sec on" id="t-home">
+<div class="card q" id="quote"></div><button class="p" onclick="newQuote(true)">تحفيز جديد</button>
+<div class="card"><div class="stats"><div><b id="st">0</b><span>أيام استيقاظ متتالية</span></div><div><b id="sf">0</b><span>دقائق تركيز اليوم</span></div><div><b id="sk">0</b><span>مهام منجزة اليوم</span></div></div>
+<div class="bars" id="bars"></div><div style="font-size:12px;color:var(--mut);text-align:center">دقائق التركيز في آخر 7 أيام</div></div>
 <p style="color:var(--mut)" id="status"></p></div>
 
+<div class="sec" id="t-focus"><div class="card"><div id="fclock">25:00</div><p id="fmode" style="text-align:center;color:var(--mut)">جاهز</p>
+<div class="row"><input id="fw" type="number" value="25" min="1"><input id="fb" type="number" value="5" min="1"></div>
+<div class="row"><button class="p" onclick="fstart()">ابدأ</button><button class="g" onclick="fstop()">إيقاف</button></div>
+<p style="font-size:13px;color:var(--mut)">الحقل الأول دقائق التركيز والثاني دقائق الراحة. جلسات اليوم: <b id="fn">0</b></p></div></div>
+
+<div class="sec" id="t-tasks"><div class="row"><input id="ti" placeholder="مهمة جديدة"><button class="p" onclick="addT()">إضافة</button></div><div id="tl" class="card"></div></div>
+
 <div class="sec" id="t-talk"><div id="chat"></div>
-<div class="row"><input id="inp" placeholder="اكتب سؤالك الدراسي"><button class="p" onclick="send()">إرسال</button><button class="p" onclick="listen()">🎤</button></div></div>
+<div class="row"><input id="inp" placeholder="اسأل أو اكتب مادة للاختبار"><button class="p" onclick="send()">إرسال</button><button class="p" onclick="listen()">🎤</button><button class="g" onclick="quiz()">اختبرني</button></div></div>
 
 <div class="sec" id="t-set">
-<label>وقت المنبه</label><input type="time" id="al" value="05:30">
-<label>مفتاح API (اختياري، اتركه فارغاً لاستخدام الذكاء الاصطناعي المجاني)</label><input id="key" type="password" placeholder="sk-ant-...">
-<label>المساعد يتكلم كل (دقيقة) أثناء فتح التطبيق</label><input id="gap" type="number" value="30" min="5">
-<div class="row"><button class="p" onclick="save()">حفظ وجدولة</button><button class="p" onclick="startRing()">جرّب المنبه</button></div><div id="msg"></div></div>
+<label>وقت المنبه</label><input type="time" id="al">
+<label>تاريخ الامتحان</label><input type="date" id="ex">
+<label>مفتاح API (اختياري، اتركه فارغاً للذكاء المجاني)</label><input id="key" type="password">
+<label>المساعد يتكلم كل (دقيقة) أثناء فتح التطبيق</label><input id="gap" type="number" min="5">
+<label>أضف عبارة تحفيزية خاصة بك</label><div class="row"><input id="nq"><button class="g" onclick="addQ()">إضافة</button></div>
+<div class="row"><button class="p" onclick="save()">حفظ وجدولة</button><button class="g" onclick="startRing()">جرّب المنبه</button></div><p id="msg"></p></div>
 
 <div id="ring"><h2>⏰ استيقظ!</h2><p>اغسل وجهك ثم صوّر المغسلة في الحمام لإيقاف المنبه</p>
-<label class="p" style="display:inline-block;padding:14px 22px;background:var(--acc);color:#1b1500;border-radius:12px;font-weight:700">📷 صوّر المغسلة
-<input type="file" accept="image/*" capture="environment" id="cam" hidden></label><p id="rmsg"></p></div>
+<label class="p" style="display:inline-block;padding:14px 22px;border-radius:12px;font-weight:700;background:var(--acc);color:#1b1500">📷 صوّر المغسلة<input type="file" accept="image/*" capture="environment" id="cam" hidden></label><p id="rmsg"></p></div>
 
-<nav><button class="on" data-t="home">الرئيسية</button><button data-t="talk">المساعد</button><button data-t="set">الإعدادات</button></nav>
+<nav><button class="on" data-t="home">الرئيسية</button><button data-t="focus">تركيز</button><button data-t="tasks">مهام</button><button data-t="talk">المساعد</button><button data-t="set">إعدادات</button></nav>
 <script>
 const $=s=>document.querySelector(s),LS={g:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},s:(k,v)=>localStorage.setItem(k,JSON.stringify(v))};
-const P=()=>(window.Capacitor&&Capacitor.Plugins)||{},TARGET=new Date(2027,1,1);
-const Q=["ابدأ الآن، فالمثابرة اليوم هي نجاحك غدًا.","ساعة تركيز الآن تغني عن أسبوع من التسويف.","لا تقارن بدايتك بنهاية غيرك.","كل صفحة تنهيها تقرّبك من هدفك.","التعب مؤقت، والنتيجة تبقى.","اجعل اليوم مختلفًا، ذاكر قبل أن تشعر بالرغبة.","النجاح مجموع جهود صغيرة تتكرر كل يوم.","أنت أقرب مما تظن، لا تتوقف.","قم، توضأ، وابدأ بأصعب مادة أولًا.","الانضباط يتغلب على الموهبة حين تغيب الموهبة.","من جدّ وجد، ومن زرع حصد.","خطوة واحدة الآن أفضل من خطة كاملة غدًا.","ركّز على العملية وستأتي النتيجة وحدها.","أغلق الهاتف عشرين دقيقة وانظر كم تنجز.","حلمك يستحق ليالي السهر وصباحات التعب.","راجع اليوم ما درسته أمس، فالتكرار أساس الإتقان.","لا تقل لا أستطيع، قل لم أتعلم بعد.","الوقت يمر سواء درست أم لا، فاختر الدراسة.","كل اختبار تنجح فيه يبدأ بجلسة مذاكرة مملة.","كن فخورًا بنفسك لأنك لم تستسلم.","ارتح خمس دقائق ثم عد، العظماء يستمرون.","اكتب أهداف اليوم الثلاثة وأنجزها قبل المساء.","الفشل مجرد درس، والنجاح يأتي لمن يكرر المحاولة.","اشرب ماء، تنفس بعمق، وابدأ المذاكرة.","أسبوع من الانضباط يغيّر عادة كاملة."];
-const rq=()=>Q[Math.random()*Q.length|0];
-function tick(){let t=Math.max(0,TARGET-new Date()),f=(id,v)=>$(id).textContent=v;f('#d',t/864e5|0);f('#h',(t/36e5|0)%24);f('#mi',(t/6e4|0)%60);f('#s',(t/1e3|0)%60)}
+const P=()=>(window.Capacitor&&Capacitor.Plugins)||{},today=()=>new Date().toDateString();
+const Q0=["ابدأ الآن، فالمثابرة اليوم هي نجاحك غدًا.","ساعة تركيز الآن تغني عن أسبوع من التسويف.","لا تقارن بدايتك بنهاية غيرك.","كل صفحة تنهيها تقرّبك من هدفك.","التعب مؤقت، والنتيجة تبقى.","ذاكر قبل أن تشعر بالرغبة، فالرغبة تأتي بعد البدء.","النجاح مجموع جهود صغيرة تتكرر كل يوم.","أنت أقرب مما تظن، لا تتوقف.","ابدأ بأصعب مادة أولًا.","الانضباط يتغلب على الموهبة.","من جدّ وجد، ومن زرع حصد.","خطوة واحدة الآن أفضل من خطة كاملة غدًا.","ركّز على العملية وستأتي النتيجة وحدها.","أغلق الهاتف عشرين دقيقة وانظر كم تنجز.","حلمك يستحق ليالي السهر وصباحات التعب.","راجع اليوم ما درسته أمس، فالتكرار أساس الإتقان.","لا تقل لا أستطيع، قل لم أتعلم بعد.","الوقت يمر سواء درست أم لا، فاختر الدراسة.","كن فخورًا بنفسك لأنك لم تستسلم.","ارتح خمس دقائق ثم عد، العظماء يستمرون.","اكتب أهداف اليوم الثلاثة وأنجزها قبل المساء.","الفشل درس، والنجاح لمن يكرر المحاولة.","اشرب ماء، تنفس بعمق، وابدأ المذاكرة.","أسبوع من الانضباط يغيّر عادة كاملة."];
+const rq=()=>{const a=Q0.concat(LS.g('myq',[]));return a[Math.random()*a.length|0]};
+const target=()=>new Date((LS.g('exam','2027-02-01'))+'T00:00:00');
+function tick(){let t=Math.max(0,target()-new Date()),f=(i,v)=>$(i).textContent=v;f('#d',t/864e5|0);f('#h',(t/36e5|0)%24);f('#mi',(t/6e4|0)%60);f('#s',(t/1e3|0)%60)}
 setInterval(tick,1e3);tick();
 function newQuote(sp){const q=rq();$('#quote').textContent=q;if(sp)say(q)}newQuote();
-document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button,.sec').forEach(e=>e.classList.remove('on'));b.classList.add('on');$('#t-'+b.dataset.t).classList.add('on')});
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button,.sec').forEach(e=>e.classList.remove('on'));b.classList.add('on');$('#t-'+b.dataset.t).classList.add('on');stats()});
 function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='ar-SA';speechSynthesis.speak(u)}catch(e){}}
-// settings
-$('#al').value=LS.g('al','05:30');$('#key').value=LS.g('key','');$('#gap').value=LS.g('gap',30);
-const today=()=>new Date().toDateString(),done=()=>LS.g('ver','')===today();
+// ---- settings
+$('#al').value=LS.g('al','05:30');$('#ex').value=LS.g('exam','2027-02-01');$('#key').value=LS.g('key','');$('#gap').value=LS.g('gap',30);
+$('#ttl').textContent='المتبقي على الامتحان: '+LS.g('exam','2027-02-01');
+const vers=()=>LS.g('vers',[]),done=()=>vers().includes(today());
+function streak(){const v=new Set(vers());let n=0,d=new Date();if(!v.has(d.toDateString()))d.setDate(d.getDate()-1);while(v.has(d.toDateString())){n++;d.setDate(d.getDate()-1)}return n}
+function addQ(){const v=$('#nq').value.trim();if(v){LS.s('myq',LS.g('myq',[]).concat(v));$('#nq').value='';$('#msg').textContent='أضيفت العبارة'}}
+// ---- stats
+function stats(){const foc=LS.g('foc',{}),tk=LS.g('tasks',[]);$('#st').textContent=streak();$('#sf').textContent=foc[today()]||0;$('#sk').textContent=tk.filter(x=>x.d&&x.on==today()).length;
+const bars=$('#bars');bars.innerHTML='';const mx=Math.max(30,...Object.values(foc));for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const b=document.createElement('i');b.style.height=((foc[d.toDateString()]||0)/mx*100)+'%';bars.append(b)}
+$('#fn').textContent=LS.g('sess',{})[today()]||0}
+// ---- tasks
+function renderT(){const l=$('#tl'),tk=LS.g('tasks',[]);l.innerHTML='';if(!tk.length)l.textContent='لا مهام بعد. أضف أول مهمة لليوم.';tk.forEach((x,i)=>{const r=document.createElement('div');r.className='tk'+(x.d?' d':'');const c=document.createElement('input');c.type='checkbox';c.style.width='22px';c.checked=x.d;c.onchange=()=>{x.d=c.checked;x.on=c.checked?today():'';LS.s('tasks',tk);renderT();stats()};const s=document.createElement('span');s.textContent=x.t;const b=document.createElement('button');b.className='g';b.textContent='حذف';b.onclick=()=>{tk.splice(i,1);LS.s('tasks',tk);renderT();stats()};r.append(c,s,b);l.append(r)})}
+function addT(){const v=$('#ti').value.trim();if(!v)return;LS.s('tasks',LS.g('tasks',[]).concat({t:v,d:false}));$('#ti').value='';renderT()}
+renderT();
+// ---- focus timer
+let ft,fend=0,fm='work';
+function fshow(){const r=Math.max(0,fend-Date.now()),m=r/6e4|0,s=(r/1e3|0)%60;$('#fclock').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');if(r<=0)fnext()}
+async function fnotif(min,txt){const N=P().LocalNotifications;if(!N)return;try{await N.cancel({notifications:[{id:9001}]});if(min)await N.schedule({notifications:[{id:9001,title:'⏱ المؤقت',body:txt,schedule:{at:new Date(Date.now()+min*6e4),allowWhileIdle:true}}]})}catch(e){}}
+function fbegin(){const w=fm=='work',min=+(w?$('#fw').value:$('#fb').value)||25;fend=Date.now()+min*6e4;$('#fmode').textContent=w?'وقت التركيز':'وقت الراحة';fnotif(min,w?'انتهى التركيز، خذ استراحة':'انتهت الراحة، عد للمذاكرة');clearInterval(ft);ft=setInterval(fshow,500);fshow()}
+function fstart(){fm='work';say('نبدأ التركيز، بالتوفيق');fbegin()}
+function fstop(){clearInterval(ft);fnotif(0);$('#fmode').textContent='متوقف'}
+function fnext(){if(fm=='work'){const m=+$('#fw').value||25,f=LS.g('foc',{}),s=LS.g('sess',{});f[today()]=(f[today()]||0)+m;s[today()]=(s[today()]||0)+1;LS.s('foc',f);LS.s('sess',s);stats();say('أحسنت! انتهت الجلسة، خذ استراحة');fm='break'}else{say('انتهت الراحة، لنعد للمذاكرة');fm='work'}fbegin()}
+// ---- scheduling
 async function schedule(){const N=P().LocalNotifications;if(!N)return $('#status').textContent='الجدولة تعمل داخل تطبيق الأندرويد فقط';
-try{await N.requestPermissions();const p=await N.getPending();if(p.notifications.length)await N.cancel(p);
+try{await N.requestPermissions();const p=await N.getPending();const old=p.notifications.filter(n=>n.id!=9001);if(old.length)await N.cancel({notifications:old});
 const [h,m]=LS.g('al','05:30').split(':').map(Number),L=[],now=new Date();
 for(let d=0;d<7;d++){const day=new Date(now.getFullYear(),now.getMonth(),now.getDate()+d);
 if(!(d==0&&done()))for(let i=0;i<10;i++){const at=new Date(day);at.setHours(h,m+i,0,0);if(at>now)L.push({id:1000+d*100+i,title:'⏰ استيقظ!',body:'افتح التطبيق وصوّر المغسلة لإيقاف المنبه',schedule:{at,allowWhileIdle:true},extra:{alarm:1}})}
 [9,12,15,18,21].forEach((hr,j)=>{const at=new Date(day);at.setHours(hr,0,0,0);if(at>now)L.push({id:5000+d*10+j,title:'📚 تحفيز دراسي',body:rq(),schedule:{at,allowWhileIdle:true}})})}
 await N.schedule({notifications:L});$('#status').textContent='تمت جدولة '+L.length+' تنبيه'}catch(e){$('#status').textContent='خطأ في الجدولة: '+e.message}}
-function save(){LS.s('al',$('#al').value);LS.s('key',$('#key').value.trim());LS.s('gap',+$('#gap').value||30);$('#msg').textContent='تم الحفظ';schedule();loopTalk()}
-// alarm
-let ctx,osc,vib;
+function save(){LS.s('al',$('#al').value);LS.s('exam',$('#ex').value||'2027-02-01');LS.s('key',$('#key').value.trim());LS.s('gap',+$('#gap').value||30);$('#ttl').textContent='المتبقي على الامتحان: '+LS.g('exam');$('#msg').textContent='تم الحفظ';schedule();loopTalk()}
+// ---- alarm
+let ctx,osc,vib,sy;
 function startRing(){$('#ring').classList.add('on');try{ctx=ctx||new AudioContext();osc=setInterval(()=>{const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=880;o.connect(g);g.connect(ctx.destination);g.gain.value=.9;o.start();o.stop(ctx.currentTime+.4)},700)}catch(e){}
-vib=setInterval(()=>navigator.vibrate&&navigator.vibrate([400,200,400]),1500)}
-function stopRing(){clearInterval(osc);clearInterval(vib);$('#ring').classList.remove('on')}
+vib=setInterval(()=>navigator.vibrate&&navigator.vibrate([400,200,400]),1500);sy=setInterval(()=>say('استيقظ واغسل وجهك. '+rq()),25000)}
+function stopRing(){clearInterval(osc);clearInterval(vib);clearInterval(sy);speechSynthesis.cancel();$('#ring').classList.remove('on')}
 function img64(f){return new Promise(r=>{const i=new Image();i.onload=()=>{const k=Math.min(1,900/Math.max(i.width,i.height)),c=document.createElement('canvas');c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',.8).split(',')[1])};i.src=URL.createObjectURL(f)})}
 async function ai(content,system,max){const k=LS.g('key','');
 if(k){const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-5-5',max_tokens:max||400,system,messages:content})});const j=await r.json();if(!j.content)throw new Error(j.error?.message||'فشل الطلب');return j.content.map(x=>x.text||'').join('')}
@@ -75,17 +111,19 @@ const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers
 if(!r.ok)throw new Error('الخدمة المجانية مشغولة، حاول بعد لحظات');const j=await r.json();return j.choices[0].message.content}
 $('#cam').onchange=async e=>{const f=e.target.files[0];if(!f)return;$('#rmsg').textContent='جارٍ التحقق من الصورة...';
 try{const t=await ai([{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:await img64(f)}},{type:'text',text:'هل هذه صورة حقيقية ملتقطة الآن لمغسلة (حوض غسل وجه) في حمام؟ أجب بكلمة YES أو NO فقط ثم سبب قصير بالعربية.'}]}],'أنت مدقق صارم. ارفض الصور من شاشات أو صور مطبوعة أو أي شيء ليس مغسلة حمام حقيقية.',80);
-if(/^\s*YES/i.test(t)){LS.s('ver',today());stopRing();say('صباح الخير! بالتوفيق في دراستك اليوم');schedule()}else{$('#rmsg').textContent='❌ لم تُقبل الصورة: '+t.replace(/^\s*NO\W*/i,'')}}
-catch(err){$('#rmsg').textContent='خطأ: '+err.message+' (تأكد من الإنترنت)'}e.target.value=''};
-// assistant
+if(/^\s*YES/i.test(t)){LS.s('vers',vers().concat(today()));stopRing();stats();say('صباح الخير! بالتوفيق في دراستك اليوم');schedule()}else{$('#rmsg').textContent='❌ لم تُقبل الصورة: '+t.replace(/^\s*NO\W*/i,'')}}
+catch(err){$('#rmsg').textContent='خطأ: '+err.message}e.target.value=''};
+// ---- assistant
 let hist=[];const add=(c,t)=>{const d=document.createElement('div');d.className='m '+c;d.textContent=t;$('#chat').append(d);$('#chat').scrollTop=1e9};
+const sys=()=>'أنت مساعد دراسي صوتي ودود يتحدث العربية. ردودك قصيرة (جملتان إلى أربع)، تشرح بوضوح وتحفّز الطالب. إذا طلب اختباراً فاسأل سؤالاً واحداً ثم صحّح إجابته. مهام الطالب غير المنجزة: '+(LS.g('tasks',[]).filter(x=>!x.d).map(x=>x.t).join('، ')||'لا شيء')+'. الأيام المتبقية للامتحان: '+Math.ceil((target()-new Date())/864e5);
 async function send(t){t=(typeof t=='string'?t:$('#inp').value).trim();if(!t)return;$('#inp').value='';add('u',t);hist.push({role:'user',content:t});
-try{const r=await ai(hist.slice(-12),'أنت مساعد دراسي صوتي ودود يتحدث العربية. ردودك قصيرة (جملتان إلى أربع)، تشرح بوضوح وتحفّز الطالب. الطالب يستعد لامتحانات تبدأ في فبراير 2027.',500);hist.push({role:'assistant',content:r});add('a',r);say(r)}catch(e){add('a','خطأ: '+e.message)}}
+try{const r=await ai(hist.slice(-12),sys(),500);hist.push({role:'assistant',content:r});add('a',r);say(r)}catch(e){add('a','خطأ: '+e.message)}}
+function quiz(){send('اختبرني بسؤال واحد في: '+($('#inp').value.trim()||'موادي الدراسية'))}
 $('#inp').onkeydown=e=>e.key=='Enter'&&send();
 async function listen(){const S=P().SpeechRecognition;if(!S)return add('a','التعرف على الصوت يعمل داخل تطبيق الأندرويد');
 try{await S.requestPermissions();const r=await S.start({language:'ar-SA',partialResults:false,popup:false});if(r&&r.matches&&r.matches[0])send(r.matches[0])}catch(e){add('a','تعذر التعرف على الصوت')}}
 let talkT;function loopTalk(){clearInterval(talkT);talkT=setInterval(()=>{if(!$('#ring').classList.contains('on')){const q=rq();add('a',q);say(q)}},LS.g('gap',30)*6e4)}
-// startup: ring if alarm time passed within 3h and not verified
-(function(){const [h,m]=LS.g('al','05:30').split(':').map(Number),a=new Date();a.setHours(h,m,0,0);const diff=new Date()-a;if(diff>=0&&diff<10800e3&&!done())startRing();schedule();loopTalk()})();
-const L=P().LocalNotifications;if(L)L.addListener('localNotificationReceived',n=>{if(n.extra&&n.extra.alarm&&!done())startRing()}),L.addListener('localNotificationActionPerformed',a=>{if(a.notification.extra&&a.notification.extra.alarm&&!done())startRing()});
+// ---- startup
+(function(){const [h,m]=LS.g('al','05:30').split(':').map(Number),a=new Date();a.setHours(h,m,0,0);const diff=new Date()-a;if(diff>=0&&diff<10800e3&&!done())startRing();schedule();loopTalk();stats()})();
+const L=P().LocalNotifications;if(L){const f=n=>{if(n.extra&&n.extra.alarm&&!done())startRing()};L.addListener('localNotificationReceived',f);L.addListener('localNotificationActionPerformed',a=>f(a.notification))}
 </script></body></html>
