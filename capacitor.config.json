@@ -1,1 +1,5 @@
-{"appId":"com.study.wakeup","appName":"منبه الدراسة","webDir":"www","server":{"androidScheme":"https"}}
+{
+  "appId": "com.khaled.study",
+  "appName": "خالد",
+  "webDir": "www"
+}
